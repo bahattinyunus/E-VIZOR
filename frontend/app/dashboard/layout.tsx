@@ -16,7 +16,7 @@ import {
     ShieldCheck
 } from "lucide-react";
 import { CommandTerminal } from "./command-terminal";
-import { useState } from "react";
+import { motion } from "framer-motion";
 import { VaultProvider, useVault } from "./context/vault-context";
 
 export default function DashboardLayout({
