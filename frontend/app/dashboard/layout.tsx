@@ -12,9 +12,11 @@ import {
     Bell,
     User,
     Zap,
-    LayoutDashboard
+    LayoutDashboard,
+    ShieldCheck
 } from "lucide-react";
 import { CommandTerminal } from "./command-terminal";
+import { useState } from "react";
 
 export default function DashboardLayout({
     children,
@@ -59,6 +61,12 @@ export default function DashboardLayout({
                         icon={<BarChart3 className="h-4 w-4" />}
                         label="Analizler"
                         active={pathname === "/dashboard/analytics"}
+                    />
+                    <NavItem
+                        href="/dashboard/audit"
+                        icon={<ShieldCheck className="h-4 w-4" />}
+                        label="Denetim İzi"
+                        active={pathname === "/dashboard/audit"}
                     />
                 </div>
 

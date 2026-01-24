@@ -14,6 +14,8 @@ import {
     Sparkles
 } from "lucide-react";
 
+import { ProcessingOverlay } from "./components/processing-overlay";
+
 const container = {
     hidden: { opacity: 0 },
     show: {
@@ -32,9 +34,21 @@ const item = {
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
+    const [isSealing, setIsSealing] = useState(false);
     const [stats, setStats] = useState<any>(null);
     const [advice, setAdvice] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [secureMode, setSecureMode] = useState(false);
+
+    const handleNewTransaction = () => {
+        setIsSealing(true);
+    };
+
+    const handleSealComplete = () => {
+        setIsSealing(false);
+        // Refresh data or show success toast
+        window.location.reload();
+    };
 
     useEffect(() => {
         // Fetch stats and documents simulation info
@@ -78,7 +92,10 @@ export default function DashboardPage() {
                     <h1 className="text-3xl font-black text-white px-1">Hoş Geldin, Bahattin</h1>
                     <p className="text-zinc-500 text-sm mt-1 px-1">Platform genelinde vergi otonomisi aktiftir.</p>
                 </div>
-                <button className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-black transition-all hover:bg-zinc-200 active:scale-95">
+                <button
+                    onClick={handleNewTransaction}
+                    className="flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-black transition-all hover:bg-zinc-200 active:scale-95"
+                >
                     <Plus className="h-4 w-4" />
                     Yeni İşlem
                 </button>
@@ -283,6 +300,49 @@ export default function DashboardPage() {
                     </div>
                 </motion.div>
             </div>
+
+            {/* Tactical Timeline (New Phase 5 Feature) */}
+            <motion.div variants={item} className="rounded-3xl border border-white/5 bg-zinc-900/10 p-10">
+                <div className="flex items-center justify-between mb-10">
+                    <div className="flex items-center gap-3">
+                        <Terminal className="h-5 w-5 text-zinc-500" />
+                        <h3 className="text-xl font-black text-white">Sistem Kronolojisi</h3>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[8px] font-black text-zinc-600 uppercase tracking-widest">
+                        Otonom Loglama Aktif
+                    </div>
+                </div>
+
+                <div className="space-y-8 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-px before:bg-zinc-800">
+                    <TimelineItem
+                        time="10:42"
+                        title="Blok #42,910,231 Onaylandı"
+                        desc="Yeni evrak (Fatura_05.pdf) mühürleme işlemi tamamlandı."
+                        icon={<ShieldCheck className="h-3 w-3" />}
+                        status="success"
+                    />
+                    <TimelineItem
+                        time="09:15"
+                        title="OVEYS Mevzuat Güncellemesi"
+                        desc="Resmi Gazete No: 32421 tarandı. KDV tebliği analiz edildi."
+                        icon={<Sparkles className="h-3 w-3" />}
+                        status="info"
+                    />
+                    <TimelineItem
+                        time="Dün"
+                        title="Anomali Tespiti"
+                        desc="Tekrarlanan gider kalemi yakalandı ve karantinaya alındı."
+                        icon={<AlertCircle className="h-3 w-3" />}
+                        status="warning"
+                    />
+                </div>
+            </motion.div>
+
+            <ProcessingOverlay
+                isVisible={isSealing}
+                onComplete={handleSealComplete}
+                fileName="TR_FATURA_2025_05.pdf"
+            />
         </motion.div>
     );
 }
