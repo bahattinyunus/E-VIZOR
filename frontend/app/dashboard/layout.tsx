@@ -17,18 +17,39 @@ import {
 } from "lucide-react";
 import { CommandTerminal } from "./command-terminal";
 import { useState } from "react";
+import { VaultProvider, useVault } from "./context/vault-context";
 
 export default function DashboardLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    return (
+        <VaultProvider>
+            <DashboardLayoutContent>{children}</DashboardLayoutContent>
+        </VaultProvider>
+    );
+}
+
+function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const { secureMode, toggleSecureMode, metrics } = useVault();
 
     return (
-        <div className="flex h-screen w-full bg-[#050505] text-zinc-200 selection:bg-purple-500/30">
+        <div className={`flex h-screen w-full bg-[#050505] text-zinc-200 selection:bg-purple-500/30 transition-all duration-700 ${secureMode ? "brightness-125 contrast-125 saturate-150" : ""}`}>
+            {/* THE VAULT Visual Overlays */}
+            {secureMode && (
+                <div className="fixed inset-0 z-[100] pointer-events-none overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent bg-[length:100%_4px] animate-scanline"></div>
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]"></div>
+                    <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-[8px] font-black text-emerald-400 uppercase tracking-widest animate-pulse">
+                        <ShieldCheck className="h-3 w-3" /> Vault Secure Channel Active
+                    </div>
+                </div>
+            )}
+
             {/* Sidebar */}
-            <aside className="w-72 border-r border-white/5 bg-black p-6 flex flex-col hidden md:flex">
+            <div className={`flex w-72 flex-col border-r border-white/5 bg-[#080808]/80 backdrop-blur-xl transition-all duration-500 ${secureMode ? "border-emerald-500/20" : ""}`}>
                 <div className="mb-10 flex items-center gap-3 px-2">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 font-bold text-white shadow-[0_0_20px_rgba(168,85,247,0.3)]">
                         E
@@ -81,19 +102,33 @@ export default function DashboardLayout({
                         <LogOut className="h-4 w-4" />
                         Oturumu Kapat
                     </button>
-
-                    <div className="mt-8 rounded-2xl bg-gradient-to-br from-zinc-900 to-black border border-white/5 p-5 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:scale-110 transition-transform">
-                            <Zap className="h-10 w-10 text-purple-500" />
+                    {/* THE VAULT Toggle */}
+                    <div className={`mt-4 p-4 rounded-xl bg-gradient-to-r from-zinc-900 to-black border transition-all duration-500 relative overflow-hidden ${secureMode ? "border-emerald-500/40" : "border-white/5"}`}>
+                        <div className="flex items-center justify-between relative z-10 font-black">
+                            <div className="flex items-center gap-2">
+                                <div className={`h-2 w-2 rounded-full animate-pulse ${secureMode ? "bg-emerald-500 shadow-[0_0_10px_#10b981]" : "bg-zinc-700"}`}></div>
+                                <span className={`text-[10px] uppercase tracking-widest ${secureMode ? "text-emerald-400" : "text-zinc-600"}`}>The Vault</span>
+                            </div>
+                            <div
+                                onClick={toggleSecureMode}
+                                className={`h-4 w-8 rounded-full p-0.5 cursor-pointer flex items-center transition-all ${secureMode ? "bg-emerald-500/20 justify-end" : "bg-zinc-800 justify-start"}`}
+                            >
+                                <div className={`h-3 w-3 rounded-full transition-all ${secureMode ? "bg-emerald-500 shadow-[0_0_8px_#10b981]" : "bg-zinc-600"}`}></div>
+                            </div>
                         </div>
-                        <p className="text-xs font-bold text-purple-400 mb-1">PRO PLAN</p>
-                        <p className="text-[11px] text-zinc-500 leading-relaxed">Yapay zeka otonomisi tam kapasite çalışıyor.</p>
-                        <div className="mt-3 h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
-                            <div className="h-full w-full bg-gradient-to-r from-purple-500 to-pink-500"></div>
+                    </div>
+
+                    {/* System Metrics (Phase 8 Deep Tech) */}
+                    <div className="mt-6 space-y-3 px-1">
+                        <SidebarMetric label="CPU LOAD" value={`${metrics.cpu_usage}%`} progress={metrics.cpu_usage} color={secureMode ? "bg-emerald-500" : "bg-purple-500"} />
+                        <SidebarMetric label="MEM SECURE" value={`${metrics.memory_usage}%`} progress={metrics.memory_usage} color={secureMode ? "bg-emerald-500" : "bg-blue-500"} />
+                        <div className="flex justify-between items-center text-[7px] font-black text-zinc-700 uppercase tracking-widest mt-4">
+                            <span>Node Status</span>
+                            <span className={secureMode ? "text-emerald-500" : "text-purple-500"}>{metrics.blockchain_node_status}</span>
                         </div>
                     </div>
                 </div>
-            </aside>
+            </div>
 
             {/* Main Content */}
             <main className="flex-1 overflow-auto bg-[#050505]">
@@ -147,4 +182,35 @@ function NavItem({ href, icon, label, active = false }: { href: string; icon: Re
             {label}
         </Link>
     );
+}
+function SidebarMetric({ label, value, progress, color }: any) {
+    return (
+        <div className="space-y-1">
+            <div className="flex justify-between text-[8px] font-black text-zinc-600 uppercase tracking-widest">
+                <span>{label}</span>
+                <span className="text-zinc-400">{value}</span>
+            </div>
+            <div className="h-0.5 w-full bg-zinc-900 rounded-full overflow-hidden">
+                <motion.div
+                    animate={{ width: `${progress}%` }}
+                    className={`h-full ${color} transition-all duration-1000`}
+                />
+            </div>
+        </div>
+    );
+}
+
+// Add CSS for scanline animation
+if (typeof document !== "undefined") {
+    const style = document.createElement("style");
+    style.innerHTML = `
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .animate-scanline {
+            animation: scanline 4s linear infinite;
+        }
+    `;
+    document.head.appendChild(style);
 }

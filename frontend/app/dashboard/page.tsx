@@ -11,7 +11,9 @@ import {
     ArrowDownRight,
     MoreHorizontal,
     Plus,
-    Sparkles
+    Sparkles,
+    Terminal,
+    ShieldCheck
 } from "lucide-react";
 
 import { ProcessingOverlay } from "./components/processing-overlay";
