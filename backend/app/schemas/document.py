@@ -14,9 +14,14 @@ class ExtractedData(BaseModel):
     date: Optional[date] = None
     total_amount: Optional[float] = None
     tax_amount: Optional[float] = None
+    currency: str = "TRY"
+    invoice_type: str = "E-Fatura"  # "Matbu", "E-Arşiv", "Perakende"
+    tax_details: List[dict] = [] # [{"rate": 20, "amount": 100}, ...]
+    blockchain_verified: bool = True
     items: List[str] = []
 
 class DocumentResponse(DocumentBase):
     id: str
     status: str  # "processing", "completed", "failed"
+    blockchain_tx_hash: Optional[str] = None
     extracted_data: Optional[ExtractedData] = None

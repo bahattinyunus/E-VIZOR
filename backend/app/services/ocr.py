@@ -19,5 +19,9 @@ class OCRService:
             date=date.today(),
             total_amount=round(random.uniform(50.0, 5000.0), 2),
             tax_amount=round(random.uniform(5.0, 500.0), 2),
-            items=["KDV %18", "Hizmet Bedeli", "Ürün X"]
+            currency="TRY",
+            invoice_type=random.choice(["E-Fatura", "E-Arşiv", "Perakende"]),
+            tax_details=[{"rate": 20, "amount": round(random.uniform(5.0, 500.0), 2)}],
+            blockchain_verified=True,
+            items=["KDV %20", "Hizmet Bedeli", "Ürün X"]
         )

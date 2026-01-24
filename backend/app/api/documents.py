@@ -21,5 +21,6 @@ async def scan_document(file: UploadFile = File(...)):
         filename=file.filename,
         content_type=file.content_type,
         status="completed",
+        blockchain_tx_hash="0x" + "".join([uuid.uuid4().hex for _ in range(2)])[:64],
         extracted_data=extracted_data
     )
