@@ -29,7 +29,42 @@ const item = {
     show: { opacity: 1, y: 0 }
 };
 
+import { useEffect, useState } from "react";
+
 export default function DashboardPage() {
+    const [stats, setStats] = useState<any>(null);
+    const [advice, setAdvice] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        // Fetch stats and documents simulation info
+        const fetchData = async () => {
+            try {
+                const [statsRes, adviceRes] = await Promise.all([
+                    fetch("http://localhost:8000/api/documents/"),
+                    fetch("http://localhost:8000/api/tax/advice?tax_type=genel")
+                ]);
+                const statsData = await statsRes.json();
+                const adviceData = await adviceRes.json();
+
+                // Calculate mock totals from docs
+                const totals = statsData.reduce((acc: any, doc: any) => ({
+                    income: acc.income + (doc.extracted_data?.total_amount || 0),
+                    tax: acc.tax + (doc.extracted_data?.tax_amount || 0),
+                    count: acc.count + 1
+                }), { income: 0, tax: 0, count: 0 });
+
+                setStats(totals);
+                setAdvice(adviceData);
+                setLoading(false);
+            } catch (err) {
+                console.error(err);
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
     return (
         <motion.div
             variants={container}
@@ -53,7 +88,7 @@ export default function DashboardPage() {
             <motion.div variants={item} className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <StatCard
                     title="Toplam Gelir"
-                    value="₺124,500.00"
+                    value={loading ? "..." : `₺${stats?.income.toLocaleString()}`}
                     trend="+12.5%"
                     icon={<ArrowUpRight className="h-4 w-4 text-green-400" />}
                     color="emerald"
@@ -68,7 +103,7 @@ export default function DashboardPage() {
                 />
                 <StatCard
                     title="Tahmini KDV"
-                    value="₺8,250.40"
+                    value={loading ? "..." : `₺${stats?.tax.toLocaleString()}`}
                     trend="Vadesine 4 gün"
                     icon={<AlertCircle className="h-4 w-4 text-amber-400" />}
                     color="amber"
@@ -76,7 +111,7 @@ export default function DashboardPage() {
                 />
                 <StatCard
                     title="İşlenen Evrak"
-                    value="1,248"
+                    value={loading ? "..." : stats?.count.toString()}
                     trend="+24 bugün"
                     icon={<FileText className="h-4 w-4 text-purple-400" />}
                     color="purple"
@@ -161,18 +196,13 @@ export default function DashboardPage() {
                     <div className="space-y-6">
                         <InsightCard
                             type="urgent"
-                            title="Vergi Uyarı Sistemi"
-                            desc="KDV beyannameniz için 3 eksik fatura tespit edildi. Otomatik eşleştirme başlatılsın mı?"
+                            title="Yapay Zeka Sonuçları"
+                            desc={loading ? "Mevzuat taranıyor..." : advice?.advice}
                         />
                         <InsightCard
                             type="info"
                             title="Harcama Analizi"
                             desc="Yemek giderleriniz geçen aya göre %22 düştü. Verimlilik artışı sağlandı."
-                        />
-                        <InsightCard
-                            type="success"
-                            title="Resmi Onay"
-                            desc="Nisan ayı SGK bildirimleriniz otonom olarak başarıyla tamamlandı."
                         />
                     </div>
 
