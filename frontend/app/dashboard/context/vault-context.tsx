@@ -9,6 +9,8 @@ interface VaultContextType {
         cpu_usage: number;
         memory_usage: number;
         network_load: number;
+        io_load: number;
+        entropy: number;
         blockchain_node_status: string;
         active_validations: number;
         the_vault_integrity: number;
@@ -23,6 +25,8 @@ export function VaultProvider({ children }: { children: React.ReactNode }) {
         cpu_usage: 0,
         memory_usage: 0,
         network_load: 0,
+        io_load: 0,
+        entropy: 0,
         blockchain_node_status: "checking...",
         active_validations: 0,
         the_vault_integrity: 100

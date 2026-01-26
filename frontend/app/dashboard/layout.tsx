@@ -13,7 +13,8 @@ import {
     User,
     Zap,
     LayoutDashboard,
-    ShieldCheck
+    ShieldCheck,
+    BrainCircuit
 } from "lucide-react";
 import { CommandTerminal } from "./command-terminal";
 import { motion } from "framer-motion";
@@ -42,6 +43,9 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
                 <div className="fixed inset-0 z-[100] pointer-events-none overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent bg-[length:100%_4px] animate-scanline"></div>
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]"></div>
+                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+                        style={{ backgroundImage: 'linear-gradient(to right, #10b981 1px, transparent 1px), linear-gradient(to bottom, #10b981 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
+                    </div>
                     <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-[8px] font-black text-emerald-400 uppercase tracking-widest animate-pulse">
                         <ShieldCheck className="h-3 w-3" /> Vault Secure Channel Active
                     </div>
@@ -84,6 +88,12 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
                         active={pathname === "/dashboard/analytics"}
                     />
                     <NavItem
+                        href="/dashboard/intelligence"
+                        icon={<BrainCircuit className="h-4 w-4" />}
+                        label="Zeka"
+                        active={pathname === "/dashboard/intelligence"}
+                    />
+                    <NavItem
                         href="/dashboard/audit"
                         icon={<ShieldCheck className="h-4 w-4" />}
                         label="Denetim İzi"
@@ -122,7 +132,12 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
                     <div className="mt-6 space-y-3 px-1">
                         <SidebarMetric label="CPU LOAD" value={`${metrics.cpu_usage}%`} progress={metrics.cpu_usage} color={secureMode ? "bg-emerald-500" : "bg-purple-500"} />
                         <SidebarMetric label="MEM SECURE" value={`${metrics.memory_usage}%`} progress={metrics.memory_usage} color={secureMode ? "bg-emerald-500" : "bg-blue-500"} />
+                        <SidebarMetric label="IO LOAD" value={`${metrics.io_load || 0}%`} progress={metrics.io_load || 0} color={secureMode ? "bg-emerald-500" : "bg-orange-500"} />
                         <div className="flex justify-between items-center text-[7px] font-black text-zinc-700 uppercase tracking-widest mt-4">
+                            <span>Entropy Level</span>
+                            <span className={secureMode ? "text-emerald-500" : "text-purple-500"}>{metrics.entropy || 0}</span>
+                        </div>
+                        <div className="flex justify-between items-center text-[7px] font-black text-zinc-700 uppercase tracking-widest mt-1">
                             <span>Node Status</span>
                             <span className={secureMode ? "text-emerald-500" : "text-purple-500"}>{metrics.blockchain_node_status}</span>
                         </div>

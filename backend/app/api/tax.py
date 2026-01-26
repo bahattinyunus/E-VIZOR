@@ -8,14 +8,17 @@ router = APIRouter()
 async def search_regulations(q: str):
     """Semantic search simulation for tax laws."""
     laws = [
-        {"title": "VUK Mükerrer Madde 227", "content": "Vergi beyannamelerini imzalayacak müşavirlerin sorumlulukları...", "tags": ["Sorumluluk", "İmza"]},
-        {"title": "KDV Kanunu Madde 1", "content": "Türkiye'de yapılan ticari, sınai, zirai ve mesleki nitelikteki teslimler...", "tags": ["KDV", "Teslimat"]},
-        {"title": "Gelir Vergisi Kanunu Madde 40", "content": "Safi kazancın tespit edilmesi için indirilecek giderler...", "tags": ["Gider", "İndirim"]},
-        {"title": "Resmi Gazete 32421", "content": "Dijital mecralarda vergilendirme usullerine dair yeni tebliğ...", "tags": ["Dijital", "Tebliğ"]}
+        {"title": "VUK Mükerrer Madde 227", "content": "Vergi beyannamelerini imzalayacak müşavirlerin sorumlulukları ve otonom mühürleme yetkileri...", "tags": ["Sorumluluk", "İmza", "Otonomi"]},
+        {"title": "KDV Kanunu Madde 1", "content": "Türkiye'de yapılan ticari, sınai, zirai ve mesleki nitelikteki teslimler ve hizmet ifaları...", "tags": ["KDV", "Teslimat", "Hizmet"]},
+        {"title": "Gelir Vergisi Kanunu Madde 40", "content": "Safi kazancın tespit edilmesi için indirilecek giderler, amortismanlar ve finansman giderleri...", "tags": ["Gider", "İndirim", "Finans"]},
+        {"title": "Resmi Gazete 32421", "content": "Dijital mecralarda vergilendirme usullerine dair yeni tebliğ ve otonom sistem entegrasyonu...", "tags": ["Dijital", "Tebliğ", "Entegrasyon"]},
+        {"title": "TTK Madde 18", "content": "Basiretli iş adamı gibi davranma yükümlülüğü ve dijital denetim izlekleri...", "tags": ["TTK", "Denetim", "Sorumluluk"]},
+        {"title": "ÖTV Kanunu Madde 12", "content": "Özel Tüketim Vergisi oranlarının belirlenmesi ve otonom tarama metodolojisi...", "tags": ["ÖTV", "Oran", "Metodoloji"]}
     ]
-    # Simple mock search
-    results = [law for law in laws if q.lower() in law["title"].lower() or q.lower() in law["content"].lower()]
-    return results if results else laws[:2]
+    # Simple mock search with partial matching
+    q_low = q.lower()
+    results = [law for law in laws if q_low in law["title"].lower() or q_low in law["content"].lower() or any(q_low in t.lower() for t in law["tags"])]
+    return results if results else laws[:3]
 
 @router.get("/advice")
 async def get_tax_advice(tax_type: Optional[str] = Query("general")):

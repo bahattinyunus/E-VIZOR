@@ -10,7 +10,8 @@ import {
     User,
     Zap,
     TrendingUp,
-    Receipt
+    Receipt,
+    BrainCircuit
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -38,6 +39,7 @@ export function CommandTerminal() {
         { id: "dashboard", label: "Dashboard'a Git", icon: <TrendingUp className="h-4 w-4" />, href: "/dashboard" },
         { id: "documents", label: "Evrakları Görüntüle", icon: <FileText className="h-4 w-4" />, href: "/dashboard/documents" },
         { id: "tax", label: "Vergi Durumu", icon: <Receipt className="h-4 w-4" />, href: "/dashboard/tax" },
+        { id: "intelligence", label: "Mevzuat Zekası", icon: <BrainCircuit className="h-4 w-4 text-emerald-400" />, href: "/dashboard/intelligence" },
         { id: "scandoc", label: "Yeni Evrak Tara", icon: <Zap className="h-4 w-4 text-purple-400" />, href: "/dashboard/documents/new" },
         { id: "settings", label: "Ayarlar", icon: <Settings className="h-4 w-4" />, href: "/dashboard/settings" },
         { id: "profile", label: "Profilim", icon: <User className="h-4 w-4" />, href: "/dashboard/profile" },
