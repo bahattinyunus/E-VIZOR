@@ -32,6 +32,38 @@ class TaxIntelligenceService:
             "source": "E-VİZÖR AI Regulatory Engine"
         }
 
+    @staticmethod
+    async def get_predictions():
+        """Simulates predictive tax analysis and trend forecasting."""
+        months = ["Eki", "Kas", "Ara", "Oca", "Şub", "Mar"]
+        current_year_trend = [random.randint(40000, 60000) for _ in range(6)]
+        predicted_trend = [val * random.uniform(0.9, 1.15) for val in current_year_trend]
+        
+        return {
+            "months": months,
+            "actual_trend": current_year_trend,
+            "predicted_trend": [round(v, 2) for v in predicted_trend],
+            "optimizations": [
+                {
+                    "title": "Ar-Ge İndirimi Tahmini",
+                    "impact": "₺12,400 Tasarruf",
+                    "description": "Mevcut projelerinizin Ar-Ge merkezi statüsüne geçişi ile yıl sonunda beklenen vergi kalkanı artışı.",
+                    "priority": "High"
+                },
+                {
+                    "title": "İhracat İstisnası Optimizasyonu",
+                    "impact": "₺5,200 Geri Kazanım",
+                    "description": "Gelecek çeyrekteki yurt dışı satış tahminlerinize göre KDV iade potansiyeli yüksektir.",
+                    "priority": "Medium"
+                }
+            ],
+            "summary": {
+                "projected_yearly_tax": 482000.0,
+                "potential_savings": 24800.0,
+                "confidence": 0.94
+            }
+        }
+
 class BlockchainAuditService:
     @staticmethod
     async def log_action(user_id: str, action: str, details: dict):

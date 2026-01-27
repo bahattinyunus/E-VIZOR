@@ -36,6 +36,11 @@ async def get_tax_advice(tax_type: Optional[str] = Query("general")):
     
     return advice
 
+@router.get("/predictive")
+async def get_predictive_analytics():
+    """Returns AI-driven predictive tax forecasts and optimizations."""
+    return await TaxIntelligenceService.get_predictions()
+
 @router.get("/audit-status")
 async def get_audit_status():
     """
