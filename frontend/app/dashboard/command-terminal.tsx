@@ -11,7 +11,8 @@ import {
     Zap,
     TrendingUp,
     Receipt,
-    BrainCircuit
+    BrainCircuit,
+    Wrench
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -40,6 +41,7 @@ export function CommandTerminal() {
         { id: "documents", label: "Evrakları Görüntüle", icon: <FileText className="h-4 w-4" />, href: "/dashboard/documents" },
         { id: "tax", label: "Vergi Durumu", icon: <Receipt className="h-4 w-4" />, href: "/dashboard/tax" },
         { id: "intelligence", label: "Mevzuat Zekası", icon: <BrainCircuit className="h-4 w-4 text-emerald-400" />, href: "/dashboard/intelligence" },
+        { id: "corrections", label: "Otonom Düzeltme Kayıtları", icon: <Wrench className="h-4 w-4 text-amber-400" />, href: "#" },
         { id: "scandoc", label: "Yeni Evrak Tara", icon: <Zap className="h-4 w-4 text-purple-400" />, href: "/dashboard/documents/new" },
         { id: "settings", label: "Ayarlar", icon: <Settings className="h-4 w-4" />, href: "/dashboard/settings" },
         { id: "profile", label: "Profilim", icon: <User className="h-4 w-4" />, href: "/dashboard/profile" },

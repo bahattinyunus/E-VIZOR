@@ -19,6 +19,8 @@ class ExtractedData(BaseModel):
     tax_details: List[dict] = [] # [{"rate": 20, "amount": 100}, ...]
     blockchain_verified: bool = True
     items: List[str] = []
+    auto_corrected: bool = False
+    correction_details: Optional[str] = None
 
 class DocumentResponse(DocumentBase):
     id: str

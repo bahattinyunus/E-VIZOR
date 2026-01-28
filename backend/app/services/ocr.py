@@ -14,6 +14,9 @@ class OCRService:
         # Mock Logic: Return random "Receipt" data
         merchants = ["Migros", "Starbucks", "Shell", "Teknosa", "BİM"]
         
+        auto_corrected = random.random() > 0.7
+        correction_details = "Mükellef adı 'MİGROS' olarak düzeltildi (Düşük çözünürlük telafisi)." if auto_corrected else None
+        
         return ExtractedData(
             merchant_name=random.choice(merchants),
             date=date.today(),
@@ -23,5 +26,7 @@ class OCRService:
             invoice_type=random.choice(["E-Fatura", "E-Arşiv", "Perakende"]),
             tax_details=[{"rate": 20, "amount": round(random.uniform(5.0, 500.0), 2)}],
             blockchain_verified=True,
-            items=["KDV %20", "Hizmet Bedeli", "Ürün X"]
+            items=["KDV %20", "Hizmet Bedeli", "Ürün X"],
+            auto_corrected=auto_corrected,
+            correction_details=correction_details
         )

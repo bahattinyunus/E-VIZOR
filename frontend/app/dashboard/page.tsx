@@ -13,7 +13,10 @@ import {
     Plus,
     Sparkles,
     Terminal,
-    ShieldCheck
+    ShieldCheck,
+    Cpu,
+    Zap,
+    History
 } from "lucide-react";
 
 import { ProcessingOverlay } from "./components/processing-overlay";
@@ -88,6 +91,37 @@ export default function DashboardPage() {
             animate="show"
             className="space-y-10"
         >
+            {/* Executive AI Shield Overlay (New Phase 10) */}
+            <motion.div variants={item} className="relative group">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-[32px] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+                <div className="relative flex flex-col md:flex-row items-center justify-between gap-8 rounded-[32px] border border-white/10 bg-zinc-900/40 p-10 backdrop-blur-2xl">
+                    <div className="flex items-center gap-6">
+                        <div className="relative">
+                            <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-400/5 flex items-center justify-center border border-emerald-500/30">
+                                <ShieldCheck className="h-10 w-10 text-emerald-400" />
+                            </div>
+                            <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-lg bg-zinc-900 border border-emerald-500/50 flex items-center justify-center">
+                                <Cpu className="h-3 w-3 text-emerald-500 animate-pulse" />
+                            </div>
+                        </div>
+                        <div>
+                            <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-[8px] font-black text-emerald-400 uppercase tracking-[0.2em] mb-2">
+                                Autonomous Executive Shield Active
+                            </div>
+                            <h2 className="text-3xl font-black text-white tracking-tighter">Sistem <span className="text-emerald-400">Güvenliği</span> & Otonomi</h2>
+                            <p className="text-zinc-500 text-sm mt-1 max-w-lg">
+                                OV-EYS Motoru tüm finansal izlekleri otonom olarak doğrular, hataları düzeltir ve vergi kalkanınızı dinamik olarak optimize eder.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex gap-4">
+                        <ExecutiveStat label="Şifa Puanı" value="100%" sub="Self-Healing" />
+                        <ExecutiveStat label="Güvenlik" value="Grade A+" sub="Military Tier" />
+                        <ExecutiveStat label="AI Katmanı" value="Executive" sub="Decision Support" />
+                    </div>
+                </div>
+            </motion.div>
+
             {/* Header Greeting */}
             <motion.div variants={item} className="flex items-center justify-between">
                 <div>
@@ -346,6 +380,39 @@ export default function DashboardPage() {
                 fileName="TR_FATURA_2025_05.pdf"
             />
         </motion.div>
+    );
+}
+
+function TimelineItem({ time, title, desc, icon, status }: any) {
+    const statusColors: any = {
+        success: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
+        info: "text-blue-500 bg-blue-500/10 border-blue-500/20",
+        warning: "text-amber-500 bg-amber-500/10 border-amber-500/20"
+    };
+
+    return (
+        <div className="flex gap-6 relative group">
+            <div className={`mt-1 h-9 w-9 shrink-0 rounded-xl border flex items-center justify-center relative z-10 transition-transform group-hover:scale-110 ${statusColors[status]}`}>
+                {icon}
+            </div>
+            <div className="flex-1 pb-2">
+                <div className="flex items-center justify-between mb-1">
+                    <h4 className="text-sm font-bold text-zinc-100 group-hover:text-white transition-colors">{title}</h4>
+                    <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">{time}</span>
+                </div>
+                <p className="text-xs text-zinc-500 leading-relaxed max-w-xl group-hover:text-zinc-400 transition-colors">{desc}</p>
+            </div>
+        </div>
+    );
+}
+
+function ExecutiveStat({ label, value, sub }: any) {
+    return (
+        <div className="px-6 py-4 rounded-2xl bg-white/5 border border-white/5 text-center min-w-[140px]">
+            <p className="text-[8px] font-black text-zinc-600 uppercase tracking-widest mb-1">{label}</p>
+            <p className="text-xl font-black text-white leading-none">{value}</p>
+            <p className="text-[8px] font-bold text-emerald-500/50 uppercase mt-1">{sub}</p>
+        </div>
     );
 }
 

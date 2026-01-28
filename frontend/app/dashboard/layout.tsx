@@ -138,6 +138,10 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
                             <span className={secureMode ? "text-emerald-500" : "text-purple-500"}>{metrics.entropy || 0}</span>
                         </div>
                         <div className="flex justify-between items-center text-[7px] font-black text-zinc-700 uppercase tracking-widest mt-1">
+                            <span>Healing Engine</span>
+                            <span className="text-emerald-500 animate-pulse">ACTIVE (Otonom)</span>
+                        </div>
+                        <div className="flex justify-between items-center text-[7px] font-black text-zinc-700 uppercase tracking-widest mt-1">
                             <span>Node Status</span>
                             <span className={secureMode ? "text-emerald-500" : "text-purple-500"}>{metrics.blockchain_node_status}</span>
                         </div>

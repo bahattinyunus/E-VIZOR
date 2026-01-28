@@ -15,5 +15,6 @@ async def get_system_metrics():
         "entropy": round(random.uniform(0.8, 0.99), 3),
         "blockchain_node_status": "synced",
         "active_validations": random.randint(5, 50),
-        "the_vault_integrity": 100.0
+        "the_vault_integrity": 100.0,
+        "self_healing_status": "Active (Proactive)"
     }
