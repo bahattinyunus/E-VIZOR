@@ -42,6 +42,7 @@ export default function DashboardPage() {
     const [isSealing, setIsSealing] = useState(false);
     const [stats, setStats] = useState<any>(null);
     const [advice, setAdvice] = useState<any>(null);
+    const [shieldStatus, setShieldStatus] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [secureMode, setSecureMode] = useState(false);
 
@@ -59,12 +60,14 @@ export default function DashboardPage() {
         // Fetch stats and documents simulation info
         const fetchData = async () => {
             try {
-                const [statsRes, adviceRes] = await Promise.all([
+                const [statsRes, adviceRes, shieldRes] = await Promise.all([
                     fetch("http://localhost:8000/api/documents/"),
-                    fetch("http://localhost:8000/api/tax/advice?tax_type=genel")
+                    fetch("http://localhost:8000/api/tax/advice?tax_type=genel"),
+                    fetch("http://localhost:8000/api/tax/executive/shield-status")
                 ]);
                 const statsData = await statsRes.json();
                 const adviceData = await adviceRes.json();
+                const shieldData = await shieldRes.json();
 
                 // Calculate mock totals from docs
                 const totals = statsData.reduce((acc: any, doc: any) => ({
@@ -75,6 +78,7 @@ export default function DashboardPage() {
 
                 setStats(totals);
                 setAdvice(adviceData);
+                setShieldStatus(shieldData);
                 setLoading(false);
             } catch (err) {
                 console.error(err);
@@ -106,7 +110,7 @@ export default function DashboardPage() {
                         </div>
                         <div>
                             <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-[8px] font-black text-emerald-400 uppercase tracking-[0.2em] mb-2">
-                                Autonomous Executive Shield Active
+                                {shieldStatus?.shield_active ? "Autonomous Executive Shield Active" : "Initializing Shield..."}
                             </div>
                             <h2 className="text-3xl font-black text-white tracking-tighter">Sistem <span className="text-emerald-400">Güvenliği</span> & Otonomi</h2>
                             <p className="text-zinc-500 text-sm mt-1 max-w-lg">
@@ -115,9 +119,9 @@ export default function DashboardPage() {
                         </div>
                     </div>
                     <div className="flex gap-4">
-                        <ExecutiveStat label="Şifa Puanı" value="100%" sub="Self-Healing" />
-                        <ExecutiveStat label="Güvenlik" value="Grade A+" sub="Military Tier" />
-                        <ExecutiveStat label="AI Katmanı" value="Executive" sub="Decision Support" />
+                        <ExecutiveStat label="Şifa Oranı" value={loading ? "..." : `${shieldStatus?.healing_efficiency}%`} sub="Self-Healing" />
+                        <ExecutiveStat label="Tehdit Engeli" value={loading ? "..." : shieldStatus?.threats_neutralized} sub="Neutralized" />
+                        <ExecutiveStat label="Otonom Düzeltme" value={loading ? "..." : shieldStatus?.total_autonomous_fixes} sub="AI Repaired" />
                     </div>
                 </div>
             </motion.div>

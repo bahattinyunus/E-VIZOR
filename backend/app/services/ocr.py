@@ -14,10 +14,9 @@ class OCRService:
         # Mock Logic: Return random "Receipt" data
         merchants = ["Migros", "Starbucks", "Shell", "Teknosa", "BİM"]
         
-        auto_corrected = random.random() > 0.7
-        correction_details = "Mükellef adı 'MİGROS' olarak düzeltildi (Düşük çözünürlük telafisi)." if auto_corrected else None
+        from app.services.audit_service import SelfHealingService
         
-        return ExtractedData(
+        extracted = ExtractedData(
             merchant_name=random.choice(merchants),
             date=date.today(),
             total_amount=round(random.uniform(50.0, 5000.0), 2),
@@ -30,3 +29,9 @@ class OCRService:
             auto_corrected=auto_corrected,
             correction_details=correction_details
         )
+
+        # Phase 10: Apply Autonomous Self-Healing
+        healing_result = await SelfHealingService.analyze_and_heal(extracted.dict())
+        healed_data = healing_result["data"]
+        
+        return ExtractedData(**healed_data)

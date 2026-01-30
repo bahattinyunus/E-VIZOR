@@ -16,5 +16,11 @@ async def get_system_metrics():
         "blockchain_node_status": "synced",
         "active_validations": random.randint(5, 50),
         "the_vault_integrity": 100.0,
-        "self_healing_status": "Active (Proactive)"
+        "self_healing_status": "Active (Proactive)",
+        "phase_10_otonomy": {
+            "shield_efficiency": 99.98,
+            "threat_suppression_rate": 0.992,
+            "healing_events_today": random.randint(12, 45),
+            "executive_shield": "REINFORCED"
+        }
     }

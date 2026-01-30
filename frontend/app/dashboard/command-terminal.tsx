@@ -38,10 +38,12 @@ export function CommandTerminal() {
 
     const commands = [
         { id: "dashboard", label: "Dashboard'a Git", icon: <TrendingUp className="h-4 w-4" />, href: "/dashboard" },
+        { id: "audit", label: "Denetim İzleyici (Audit Explorer)", icon: <Search className="h-4 w-4 text-purple-400" />, href: "/dashboard/audit" },
         { id: "documents", label: "Evrakları Görüntüle", icon: <FileText className="h-4 w-4" />, href: "/dashboard/documents" },
         { id: "tax", label: "Vergi Durumu", icon: <Receipt className="h-4 w-4" />, href: "/dashboard/tax" },
         { id: "intelligence", label: "Mevzuat Zekası", icon: <BrainCircuit className="h-4 w-4 text-emerald-400" />, href: "/dashboard/intelligence" },
-        { id: "corrections", label: "Otonom Düzeltme Kayıtları", icon: <Wrench className="h-4 w-4 text-amber-400" />, href: "#" },
+        { id: "shield", label: "Executive AI Shield Durumu", icon: <Zap className="h-4 w-4 text-emerald-400 animate-pulse" />, href: "/dashboard" },
+        { id: "corrections", label: "Otonom Düzeltme Kayıtları", icon: <Wrench className="h-4 w-4 text-amber-400" />, href: "/dashboard/audit" },
         { id: "scandoc", label: "Yeni Evrak Tara", icon: <Zap className="h-4 w-4 text-purple-400" />, href: "/dashboard/documents/new" },
         { id: "settings", label: "Ayarlar", icon: <Settings className="h-4 w-4" />, href: "/dashboard/settings" },
         { id: "profile", label: "Profilim", icon: <User className="h-4 w-4" />, href: "/dashboard/profile" },

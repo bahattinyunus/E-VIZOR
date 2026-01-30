@@ -85,6 +85,28 @@ export default function AuditExplorer() {
                 />
             </div>
 
+            {/* Self-Healing Log (Phase 10) */}
+            <motion.div variants={item} className="rounded-3xl border border-emerald-500/20 bg-emerald-500/5 p-8 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-6">
+                    <ShieldCheck className="h-10 w-10 text-emerald-500/20" />
+                </div>
+                <h3 className="text-xl font-bold text-emerald-400 mb-6 flex items-center gap-2">
+                    <Zap className="h-5 w-5" /> Autonomous Healing Log
+                </h3>
+                <div className="space-y-4">
+                    <HealingItem
+                        title="KDV Tutarı Düzeltildi"
+                        desc="Fatura_003.pdf üzerinde %22 sapma tespit edildi. Mevzuata uygun olarak '%20' oranına otonom revize edildi."
+                        time="10 Dakika Önce"
+                    />
+                    <HealingItem
+                        title="Mükellef Verisi Onarıldı"
+                        desc="OCR katmanındaki karakter bozulması (M1GR0S -> MIGROS) semantik motor tarafından giderildi."
+                        time="42 Dakika Önce"
+                    />
+                </div>
+            </motion.div>
+
             {/* Block List */}
             <div className="space-y-4">
                 {loading ? (
@@ -142,6 +164,21 @@ export default function AuditExplorer() {
                 Daha Fazla Blok Yükle
             </button>
         </motion.div>
+    );
+}
+
+function HealingItem({ title, desc, time }: any) {
+    return (
+        <div className="flex items-start gap-4 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/30 transition-all group">
+            <div className="mt-1 h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <div className="flex-1">
+                <div className="flex items-center justify-between mb-1">
+                    <h4 className="text-sm font-bold text-emerald-100">{title}</h4>
+                    <span className="text-[10px] font-black text-emerald-500/50 uppercase tracking-widest">{time}</span>
+                </div>
+                <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">{desc}</p>
+            </div>
+        </div>
     );
 }
 

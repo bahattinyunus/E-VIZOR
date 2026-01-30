@@ -21,6 +21,8 @@ class ExtractedData(BaseModel):
     items: List[str] = []
     auto_corrected: bool = False
     correction_details: Optional[str] = None
+    healing_status: str = "Healthy" # "Healthy", "Fixed", "Critical"
+    risk_score: float = 0.0
 
 class DocumentResponse(DocumentBase):
     id: str

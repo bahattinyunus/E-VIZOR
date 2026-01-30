@@ -53,3 +53,9 @@ async def get_audit_status():
         "consensus_algorithm": "IBFT 2.0",
         "status": "healthy"
     }
+
+@router.get("/executive/shield-status")
+async def get_shield_status():
+    """Returns the current status of the Executive AI Shield."""
+    from app.services.audit_service import SelfHealingService
+    return await SelfHealingService.get_shield_metrics()
